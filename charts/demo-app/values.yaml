@@ -8,10 +8,10 @@ backend:
   resources:
     requests:
       cpu: 50m
-      memory: 16Mi
+      memory: 8Mi
     limits:
       cpu: 200m
-      memory: 16Mi
+      memory: 8Mi
 
 frontend:
   replicaCount: 2
