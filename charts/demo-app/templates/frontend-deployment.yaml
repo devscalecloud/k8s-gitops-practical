@@ -5,11 +5,6 @@ metadata:
   namespace: {{ include "demo-app.namespace" . }}
   labels:
     app: frontend
-  annotations:
-    # Sync wave 0 (the default -- set explicitly here so the ordering
-    # relative to backend's wave -1 is obvious at a glance). Won't start
-    # applying until every wave -1 resource (backend) is Healthy.
-    argocd.argoproj.io/sync-wave: "0"
 spec:
   replicas: {{ .Values.frontend.replicaCount }}
   selector:
