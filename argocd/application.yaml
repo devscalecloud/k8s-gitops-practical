@@ -16,8 +16,8 @@ spec:
     server: https://kubernetes.default.svc
     namespace: demo-app
   syncPolicy:
-    # Manual sync for now -- ArgoCD will show OutOfSync and wait for a
-    # human (or `argocd app sync`) rather than applying automatically.
-    # Flip to an `automated: {}` block later to practice auto-sync/self-heal.
+    automated:
+      prune: true    # delete cluster resources whose manifest was removed from Git
+      selfHeal: true # revert any manual drift so the cluster always matches Git
     syncOptions:
       - CreateNamespace=true
