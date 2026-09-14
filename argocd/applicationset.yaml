@@ -1,0 +1,40 @@
+# Replaces argocd/application.yaml. A List generator with one entry --
+# deliberately the simplest possible generator, to see the
+# generator-produces-params -> template-renders-an-Application mechanic
+# clearly before reaching for something like a git-directory generator
+# (one entry per chart under charts/*) or a cluster generator (one entry
+# per registered cluster, for fleet-style "same app, every cluster"
+# deployments).
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-app
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - appName: demo-app
+            chartPath: charts/demo-app
+            namespace: demo-app
+  template:
+    metadata:
+      name: "{{appName}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/devscalecloud/k8s-gitops-practical.git
+        targetRevision: main
+        path: "{{chartPath}}"
+        helm:
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{namespace}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
