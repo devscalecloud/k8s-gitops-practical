@@ -1,3 +1,9 @@
+# VPC CIDR this cluster runs in. Needed by the backend's NetworkPolicy to
+# allow ingress from the ALB (which routes /api straight to backend pods,
+# bypassing the frontend Service, so that traffic can't be matched by a
+# podSelector -- only by source IP range).
+vpcCidr: "10.43.0.0/16"
+
 backend:
   replicaCount: 2
   image:
