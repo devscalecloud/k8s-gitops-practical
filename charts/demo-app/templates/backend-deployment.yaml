@@ -22,7 +22,6 @@ spec:
       labels:
         app: backend
     spec:
-      serviceAccountName: backend-sa
       containers:
         - name: backend
           image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
