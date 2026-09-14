@@ -5,6 +5,13 @@ metadata:
   namespace: {{ include "demo-app.namespace" . }}
   labels:
     app: backend
+  annotations:
+    # Sync wave -1: deploys before wave 0 (frontend) and must reach Healthy
+    # before ArgoCD proceeds to the next wave -- separate mechanism from
+    # the PreSync hook above (hooks run once outside normal resource sync;
+    # waves order the regular, ongoing-reconciled resources against each
+    # other within that sync).
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   replicas: {{ .Values.backend.replicaCount }}
   selector:

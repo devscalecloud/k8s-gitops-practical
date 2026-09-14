@@ -1,0 +1,24 @@
+# PreSync hook: runs to completion once, before ArgoCD applies anything
+# else in this sync. Deliberately just a sleep -- exists purely to make
+# hook ordering visible/learnable, not because this app needs a real
+# pre-deploy step (a migration, a smoke test, etc would go here for real).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: presync-delay
+  namespace: {{ include "demo-app.namespace" . }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    # BeforeHookCreation: delete any previous run of this hook Job before
+    # creating a new one on the next sync, rather than erroring on a
+    # name collision (Job names/specs are immutable once created).
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: presync-delay
+          image: busybox
+          command: ["sh", "-c", "echo 'presync hook: sleeping 10s before the rest of the sync proceeds'; sleep 10"]
