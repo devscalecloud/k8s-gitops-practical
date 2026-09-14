@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/devscalecloud/k8s-gitops-practical.git
+    targetRevision: main
+    path: charts/demo-app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: demo-app
+  syncPolicy:
+    # Manual sync for now -- ArgoCD will show OutOfSync and wait for a
+    # human (or `argocd app sync`) rather than applying automatically.
+    # Flip to an `automated: {}` block later to practice auto-sync/self-heal.
+    syncOptions:
+      - CreateNamespace=true
