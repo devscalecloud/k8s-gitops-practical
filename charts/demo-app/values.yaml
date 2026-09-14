@@ -32,7 +32,7 @@ frontend:
   # backend -- a common, realistic place for a values misconfiguration to
   # silently break the "click button -> see JSON" path without breaking
   # health checks, pod readiness, or anything Terraform/kubectl would flag.
-  backendUrl: "http://k8s-demoapp-demoappi-fc71fc5276-225071090.us-east-2.elb.amazonaws.com/api"
+  backendUrl: "http://k8s-demoapp-demoappi-fc71fc5276-1516384150.us-east-2.elb.amazonaws.com/api"
 
 ingress:
   enabled: true
