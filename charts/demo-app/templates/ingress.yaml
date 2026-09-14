@@ -11,15 +11,6 @@ spec:
   rules:
     - http:
         paths:
-          # More specific path first -- ALB Controller evaluates rules in
-          # the order they're listed, not by specificity.
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: backend
-                port:
-                  number: {{ .Values.backend.port }}
           - path: /
             pathType: Prefix
             backend:
@@ -27,4 +18,11 @@ spec:
                 name: frontend
                 port:
                   number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: {{ .Values.backend.port }}
 {{- end }}
