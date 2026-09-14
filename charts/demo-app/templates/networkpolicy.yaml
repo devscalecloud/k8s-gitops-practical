@@ -13,7 +13,7 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app: frontnd
+              app: frontend
       ports:
         - protocol: TCP
           port: {{ .Values.backend.port }}
