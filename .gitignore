@@ -1,0 +1,17 @@
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/*.tfplan
+terraform/tfplan*.out
+terraform/terraform.tfvars
+terraform/crash.log
+
+# Node
+app/**/node_modules/
+app/**/dist/
+app/**/npm-debug.log*
+
+# OS/editor cruft
+.DS_Store
+focus_parts.txt

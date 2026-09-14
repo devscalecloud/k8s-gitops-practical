@@ -1,0 +1,50 @@
+# Note: BACKEND_URL here is the *externally reachable* backend address (the
+# ALB path, not the in-cluster Service DNS name) because the browser -- not
+# this pod -- is what actually calls it.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: demo-app
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "394228349053.dkr.ecr.us-east-2.amazonaws.com/k8s-gitops-frontend:latest"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: BACKEND_URL
+              value: "http://k8s-demoapp-demoappi-fc71fc5276-1261255389.us-east-2.elb.amazonaws.com/api"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20

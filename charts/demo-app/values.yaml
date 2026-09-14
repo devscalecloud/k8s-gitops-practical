@@ -1,0 +1,43 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: 394228349053.dkr.ecr.us-east-2.amazonaws.com/k8s-gitops-backend
+    tag: latest
+    pullPolicy: Always
+  port: 4000
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: 394228349053.dkr.ecr.us-east-2.amazonaws.com/k8s-gitops-frontend
+    tag: latest
+    pullPolicy: Always
+  port: 3000
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  # The externally reachable backend URL the browser calls from the button
+  # click. Must match wherever the Ingress below actually exposes the
+  # backend -- a common, realistic place for a values misconfiguration to
+  # silently break the "click button -> see JSON" path without breaking
+  # health checks, pod readiness, or anything Terraform/kubectl would flag.
+  backendUrl: "http://k8s-demoapp-demoappi-fc71fc5276-225071090.us-east-2.elb.amazonaws.com/api"
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
