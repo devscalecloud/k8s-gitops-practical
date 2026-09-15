@@ -1,0 +1,14 @@
+# Not used by the app for anything real -- scaffolding so there's a genuine
+# PVC/PV binding to practice troubleshooting against.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: frontend-data
+  namespace: {{ include "demo-app.namespace" . }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp3
+  resources:
+    requests:
+      storage: 1Gi
