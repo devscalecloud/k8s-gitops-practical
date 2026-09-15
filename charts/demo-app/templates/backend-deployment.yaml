@@ -33,6 +33,11 @@ spec:
           env:
             - name: PORT
               value: {{ .Values.backend.port | quote }}
+            - name: API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: api-token
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           readinessProbe:
