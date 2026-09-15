@@ -15,7 +15,7 @@ spec:
       labels:
         app: frontend
     spec:
-      serviceAccountName: frontend-sa
+      serviceAccountName: frontend-svc-account
       containers:
         - name: frontend
           image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
