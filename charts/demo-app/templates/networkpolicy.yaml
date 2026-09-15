@@ -11,7 +11,14 @@ spec:
     - Ingress
   ingress:
     - from:
-        - podSelector:
+        # namespaceSelector + podSelector in the SAME list item = AND:
+        # only app=frontend pods that are ALSO in the demo-app namespace.
+        # As two separate list items this would be OR instead -- either
+        # condition alone would be enough.
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ include "demo-app.namespace" . }}
+          podSelector:
             matchLabels:
               app: frontend
         # The ALB routes /api requests straight to backend pod IPs
