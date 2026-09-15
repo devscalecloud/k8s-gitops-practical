@@ -21,7 +21,7 @@ metadata:
   namespace: {{ include "demo-app.namespace" . }}
 subjects:
   - kind: ServiceAccount
-    name: frontend-sa
+    name: frontend-service-account
     namespace: {{ include "demo-app.namespace" . }}
 roleRef:
   kind: Role
